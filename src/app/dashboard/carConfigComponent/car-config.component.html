@@ -23,7 +23,7 @@
   <mat-card class="mat_custom_card">
     <mat-card-content>
       <mat-checkbox *ngIf="otherOptions.towHitch" id="includeTow" class="example-margin" [(ngModel)]="isTowHitch" (ngModelChange)="onChangeOfTowHitch()">Tow
-        Hitch</mat-checkbox>
+        Hitch {{ isTowHitch }}</mat-checkbox>
       <mat-checkbox *ngIf="otherOptions.yoke" id="includeYoke" class="example-margin" [(ngModel)]="isYokeSteeringWheel"
         (ngModelChange)="onChangeOfYokeSteeringWheel()">Yoke Steering Wheel</mat-checkbox>
     </mat-card-content>
