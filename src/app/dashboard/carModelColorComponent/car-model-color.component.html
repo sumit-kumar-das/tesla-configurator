@@ -1,0 +1,29 @@
+<div class="mr">
+  <h3>Step 1: Choose your Model and color</h3>
+    <div id="selectModel">
+      <mat-form-field>
+        <mat-label>Select Model</mat-label>
+        <mat-select id="modelSelect" [(ngModel)]="selectedModel" name="selectedModel" (selectionChange)="onChangeOfModel($event.value,true)">
+          @for (model of carModelList; track model) {
+            <mat-option [value]="model.code">{{model.description}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div id="selectColor">
+      <mat-form-field>
+        <mat-label>Select Color</mat-label>
+        <mat-select id="colorSelect" [(ngModel)]="selectedColor" name="selectedColor" (selectionChange)="onChangeOfColor($event.value)">
+          @for (color of carColorList; track color) {
+            <mat-option [value]="color.code">{{color.description}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <hr>
+    <div id="selected_model_image" class="selected_model_image">
+      <img [src]="selecedCarImgPath" />
+    </div>
+    </div>
+    
+

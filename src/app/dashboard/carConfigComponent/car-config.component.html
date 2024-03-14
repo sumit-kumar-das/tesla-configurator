@@ -1,0 +1,35 @@
+<!-- <h4>Select Configuration : {{selectedModel}}</h4> -->
+<div id="selectModel" class="mr">
+  <div>
+    <h3>Step 2: Select your config and options</h3>
+  </div>
+  <mat-form-field class="mat_select_width">
+    <mat-label>Select Configuration</mat-label>
+    <mat-select id="configSelect" [(ngModel)]="selectedConfiguration" name="selectedConfiguration"
+      (selectionChange)="onChangeOfConfiguration($event.value)">
+      @for (config of carConfigList; track config) {
+      <mat-option [value]="config.id">{{config.description}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
+<div id="configurationDetails" class="mr" *ngIf="showCard">
+  <h4>{{selectedConfigurationDetails.description}}</h4>
+  <div class="config_description">
+    <div>Range : {{selectedConfigurationDetails.range}} miles</div>
+    <div>Max Speed : {{selectedConfigurationDetails.speed}}</div>
+    <div>Cost : {{selectedConfigurationDetails.price | currency}}</div>
+  </div>
+  <mat-card class="mat_custom_card">
+    <mat-card-content>
+      <mat-checkbox *ngIf="otherOptions.towHitch" id="includeTow" class="example-margin" [(ngModel)]="isTowHitch" (ngModelChange)="onChangeOfTowHitch()">Tow
+        Hitch</mat-checkbox>
+      <mat-checkbox *ngIf="otherOptions.yoke" id="includeYoke" class="example-margin" [(ngModel)]="isYokeSteeringWheel"
+        (ngModelChange)="onChangeOfYokeSteeringWheel()">Yoke Steering Wheel</mat-checkbox>
+    </mat-card-content>
+  </mat-card>
+</div>
+<hr>
+<div id="selected_model_image" class="selected_model_image mr" *ngIf="selectedConfiguration">
+  <img [src]="selecedCarImgPath" />
+</div>

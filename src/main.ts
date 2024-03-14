@@ -2,8 +2,9 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import { setupWorker } from 'msw/browser';
-import {http, HttpResponse} from 'msw';
-
+import {http, HttpResponse, PathParams} from 'msw';
+import { CarModelColorComponent } from './app/dashboard/carModelColorComponent/car-model-color.component';
+import { CarModel } from './app/models/car.model';
 bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
 
@@ -59,7 +60,7 @@ const handlers = [
     // @ts-ignore
     return HttpResponse.json(options[params.id.toUpperCase()]);
   }),
-  http.get('/models', ({ request, params, cookies }) => {
+  http.get('/models', () => {
     return HttpResponse.json([
       { code: "S",
         description: "Model S",

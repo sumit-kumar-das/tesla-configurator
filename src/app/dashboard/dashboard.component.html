@@ -1,0 +1,7 @@
+<div class="example-button-row">
+    <button id="step1" mat-raised-button (click)="goToStep(1)" color="primary">Step1</button>
+    <button id="step2" mat-raised-button (click)="goToStep(2)" color="primary" b
+        [disabled]="!enableSecondStep">Step2</button>
+    <button id="step3" mat-raised-button (click)="goToStep(3)" color="primary"
+        [disabled]="!enableThirdStep">Step3</button>
+</div>
