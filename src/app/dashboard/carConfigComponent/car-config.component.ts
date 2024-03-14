@@ -38,7 +38,6 @@ export class CarConfigComponent {
       this.ngOnInit();
       setTimeout(() => {
         this.onChangeOfConfiguration(config);
-        console.log(this.carService.getIsToHitch());
         this.isTowHitch = this.carService.getIsToHitch();
         this.isYokeSteeringWheel = this.carService.getIsYokeSteeringWheel();
       }, 1000);
