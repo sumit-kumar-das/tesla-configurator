@@ -1,0 +1,56 @@
+<div id="summary" *ngIf="selectedCarConfigDetails">
+  <div *ngIf="selectedModelDetails">
+    <h3>Step 3: Summary</h3>
+    <h4>Your {{selectedModelDetails.description}}</h4>
+  </div>
+  <table class="final_bill_table">
+    <thead></thead>
+    <tbody>
+    <tr>
+      <td>
+        <div>
+          <span>
+            {{selectedCarConfigDetails.description}}
+          </span>
+        </div>
+        <div class="basif-info">
+          <span>
+            Range : {{selectedCarConfigDetails.range}}
+          </span>
+          <span> miles - </span>
+          <span>
+            Max Speed : {{selectedCarConfigDetails.speed}}
+          </span>
+        </div>
+      </td>
+      <td>
+        <div>
+          <span>
+            {{selectedCarConfigDetails.price | currency}}
+          </span>
+        </div>
+      </td>
+    </tr>
+    <tr *ngIf="selectedColorDetails">
+      <td> <span>{{selectedColorDetails.description}}</span></td>
+      <td><span>{{selectedColorDetails.price | currency}}</span></td>
+    </tr>
+    <tr *ngIf="isTowHitch">
+      <td><span>Tow Hitch Package {{isTowHitch }}</span></td>
+      <td><span>{{towHitchPackagePrice | currency }}</span></td>
+    </tr>
+    <tr *ngIf="isYokeSteeringWheel">
+      <td><span>Yoke Steering Wheel {{isYokeSteeringWheel}} </span></td>
+      <td><span>{{yokeSteeringWheelPrice | currency }}</span></td>
+    </tr>
+    <tr class="total">
+      <td>Total</td>
+      <td>{{totalPrice | currency}}</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+<hr>
+<div id="selected_model_image" class="selected_model_image" *ngIf="totalPrice">
+  <img [src]="selecedCarImgPath" />
+</div>

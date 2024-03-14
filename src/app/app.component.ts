@@ -1,15 +1,14 @@
 import {Component} from '@angular/core';
-import {AsyncPipe, JsonPipe} from '@angular/common';
-
+import { RouterOutlet } from '@angular/router';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { CarService } from './services/carDetails.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AsyncPipe, JsonPipe],
-  template: `
-    <h1>Hello from {{ name }}!</h1>
-  `,
+  imports: [RouterOutlet,DashboardComponent],
+  providers: [CarService],
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
-  name = 'Angular';
-
+  
 }
