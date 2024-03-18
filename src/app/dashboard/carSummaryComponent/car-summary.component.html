@@ -1,7 +1,7 @@
-<div id="summary" *ngIf="selectedCarConfigDetails">
-  <div *ngIf="selectedModelDetails">
+<div id="summary" *ngIf="summaryDetails">
+  <div>
     <h3>Step 3: Summary</h3>
-    <h4>Your {{selectedModelDetails.description}}</h4>
+    <h4>Your {{summaryDetails.modelDescription}}</h4>
   </div>
   <table class="final_bill_table">
     <thead></thead>
@@ -10,38 +10,38 @@
         <td>
           <div>
             <span>
-              {{selectedCarConfigDetails.description}}
+              {{summaryDetails.configDescription}}
             </span>
           </div>
           <div class="basif-info">
             <span>
-              Range : {{selectedCarConfigDetails.range}}
+              Range : {{summaryDetails.range}}
             </span>
             <span> miles - </span>
             <span>
-              Max Speed : {{selectedCarConfigDetails.speed}}
+              Max Speed : {{summaryDetails.speed}}
             </span>
           </div>
         </td>
         <td>
           <div>
             <span>
-              {{selectedCarConfigDetails.price | currency}}
+              {{summaryDetails.price | currency}}
             </span>
           </div>
         </td>
       </tr>
-      <tr *ngIf="selectedColorDetails">
-        <td> <span>{{selectedColorDetails.description}}</span></td>
-        <td><span>{{selectedColorDetails.price | currency}}</span></td>
+      <tr *ngIf="summaryDetails">
+        <td> <span>{{summaryDetails.colorDescription}}</span></td>
+        <td><span>{{summaryDetails.selectedColorPrice | currency}}</span></td>
       </tr>
-      <tr *ngIf="isTowHitch">
+      <tr *ngIf="summaryDetails.isTowHitch">
         <td><span>Tow Hitch Package</span></td>
-        <td><span>{{towHitchPackagePrice | currency }}</span></td>
+        <td><span>{{summaryDetails.towHitchPackagePrice | currency }}</span></td>
       </tr>
-      <tr *ngIf="isYokeSteeringWheel">
+      <tr *ngIf="summaryDetails.isYokeSteeringWheel">
         <td><span>Yoke Steering Wheel </span></td>
-        <td><span>{{yokeSteeringWheelPrice | currency }}</span></td>
+        <td><span>{{summaryDetails.yokeSteeringWheelPrice | currency }}</span></td>
       </tr>
       <tr class="total">
         <td>Total</td>

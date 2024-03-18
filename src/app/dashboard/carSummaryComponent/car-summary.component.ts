@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { CarConfig, CarModel, Color, Config } from '../../models/car.model';
+import { CarConfig, CarModel, Color, Config, SummaryDetails } from '../../models/car.model';
 import { MatCardModule } from '@angular/material/card';
-import { RouterOutlet, Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { towHitchPackagePrice, yokoWheelSteeringPrice } from '../../constants/app.constant';
 import { CarService } from '../../services/carDetails.service';
@@ -16,62 +16,74 @@ import { CarService } from '../../services/carDetails.service';
   styleUrl: './car-summary.component.scss'
 })
 export class CarSummaryComponent {
-  selectedModelDetails: any;
-  selectedCarConfigDetails: any;
-  selectedColorDetails: any;
-  isTowHitch: any = false;
-  isYokeSteeringWheel: boolean = false;
-  towHitchPackagePrice = 0;
-  yokeSteeringWheelPrice = 0;
+  summaryDetails : SummaryDetails = {
+    modelDescription : "",
+    configDescription : "",
+    colorDescription : "",
+    selectedColorPrice : 0,
+    towHitchPackagePrice: 0,
+    isTowHitch : false,
+    isYokeSteeringWheel : false,
+    yokeSteeringWheelPrice : 0,
+    range: 0,
+    speed: 0,
+    price: 0
+  };
   totalPrice = 0;
   selecedCarImgPath: string = "";
   constructor(private route: ActivatedRoute, private httpClient: HttpClient, private carService: CarService) {
     const queryParams = this.route.snapshot.queryParamMap;
-    const model: any = queryParams.get('model');
-    const color: any = queryParams.get('color');
-    const config: any = Number(queryParams.get('config'));
-    const isTowHitch = queryParams.get('isTowHitch') === "true" ? true : false;
-    const isYokeSteeringWheel = queryParams.get('yokeSteerWheel') === "true" ? true : false;
-    this.isTowHitch = isTowHitch;
-    this.isYokeSteeringWheel = isYokeSteeringWheel;
-    if (isTowHitch) {
-      this.towHitchPackagePrice = towHitchPackagePrice;
+    const model: string = String(queryParams.get('model'));
+    const color: string = String(queryParams.get('color'));
+    const config: number = Number(queryParams.get('config'));
+    this.summaryDetails.isTowHitch = queryParams.get('isTowHitch') === "true" ? true : false;
+    this.summaryDetails.isYokeSteeringWheel = queryParams.get('yokeSteerWheel') === "true" ? true : false;
+    if (this.summaryDetails.isTowHitch) {
+      this.summaryDetails.towHitchPackagePrice = towHitchPackagePrice;
     }
-    if (isYokeSteeringWheel) {
-      this.yokeSteeringWheelPrice = yokoWheelSteeringPrice;
+    if (this.summaryDetails.isYokeSteeringWheel) {
+      this.summaryDetails.yokeSteeringWheelPrice = yokoWheelSteeringPrice;
     }
     this.getModelDetails(model, color);
     this.getConfigurationDetails(model, config);
     this.selecedCarImgPath = this.carService.getSelectedCarImage();
   }
-  getTotalCost(basePrice: number, colorPrice: number, isTowHitch: boolean, isYokeSteeringWheel: boolean) {
-    this.totalPrice = basePrice + colorPrice;
-    if (isTowHitch) {
-      this.totalPrice = this.totalPrice + this.towHitchPackagePrice;
+  getTotalCost(carData : SummaryDetails) {
+    this.totalPrice = carData.price + carData.selectedColorPrice;
+    if (carData.isTowHitch) {
+      this.totalPrice = this.totalPrice + this.summaryDetails.towHitchPackagePrice;
     }
-    if (isYokeSteeringWheel) {
-      this.totalPrice = this.totalPrice + this.yokeSteeringWheelPrice;
+    if (carData.isYokeSteeringWheel) {
+      this.totalPrice = this.totalPrice + this.summaryDetails.yokeSteeringWheelPrice;
     }
   }
   getModelDetails(model: string, color: string) {
-    this.httpClient.get('/models').subscribe((res: CarModel | any) => {
-      this.selectedModelDetails = res.find((item: CarModel) => {
-        return item.code === model;
-      });
-      this.selectedColorDetails = this.selectedModelDetails.colors.find((item: Color) => {
-        return item.code === color
+    this.httpClient.get<CarModel[]>('/models').subscribe((res: Array<CarModel> ) => {
+      res.forEach((item :CarModel)=>{
+        if(item.code === model){
+          this.summaryDetails.modelDescription = item.description;
+          item.colors.forEach((colorModel : Color) => {
+            if(colorModel.code === color){
+              this.summaryDetails.colorDescription = colorModel.description;
+              this.summaryDetails.selectedColorPrice = colorModel.price;
+              return;
+            }
+          })
+        }
       });
     });
   }
   getConfigurationDetails(model: string, config: number) {
-    this.httpClient.get('/options/' + model).subscribe((res: CarConfig | any) => {
-      const selectedCarModelConfigs = res.configs;
-      this.selectedCarConfigDetails = selectedCarModelConfigs.find((item: Config) => {
-        return item.id === config;
+    this.httpClient.get<CarConfig>('/options/' + model).subscribe((res: CarConfig ) => {
+      res.configs.forEach((item: Config) => {
+        if(item.id === config){
+          this.summaryDetails.price = item.price;
+          this.summaryDetails.range = item.range;
+          this.summaryDetails.speed = item.speed;
+          return;
+        };
       });
-      setTimeout(() => {
-        this.getTotalCost(this.selectedCarConfigDetails.price, this.selectedColorDetails.price, this.isTowHitch, this.isYokeSteeringWheel);
-      }, 100);
+        this.getTotalCost(this.summaryDetails);
     });
   }
 }
