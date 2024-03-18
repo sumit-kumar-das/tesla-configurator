@@ -7,32 +7,24 @@ import { CarConfig, CarModel } from "../models/car.model";
 })
 
 export class CarService {
-    carModelsList = signal<CarModel>({
-        colors : []
-    });
-    carConfigurationList = signal<CarConfig>({});
+    carModelsList = signal<Array<CarModel>>([]);
+
     selectedModel : string = "";
     selectedColor : string = "";
     selectedConfig : number = 0;
     isTowHitch : boolean = false;
     isYokeSteeringWheel : boolean = false;
     selectedCarImagePath : string = "";
-    private  enableSecondStep = signal<boolean>(false);
+    private enableSecondStep = signal<boolean>(false);
     stepTwoObserv$ = toObservable(this.enableSecondStep);
     private enableThirdStep = signal<boolean>(false);
     stepThreeObserv$ = toObservable(this.enableThirdStep);
     constructor(){}
-    getCarModelList() : CarModel{
+    getCarModelList() : Array<CarModel>{
         return this.carModelsList();
     }
-    updateCarModelsList(newValue :CarModel){
+    updateCarModelsList(newValue :Array<CarModel>){
         this.carModelsList.set(newValue);
-    }
-    getCarConfigList() : CarConfig{
-        return this.carConfigurationList();
-    }
-    updateCarConfigurationList(newVal :CarConfig){
-        this.carConfigurationList.set(newVal);
     }
     updateStepTwoSignal(newValue : boolean){
         this.enableSecondStep.set(newValue);

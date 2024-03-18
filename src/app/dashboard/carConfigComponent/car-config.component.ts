@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
-import { CarConfig, Config, OtherOptions } from '../../models/car.model';
+import { CarConfig, CarModel, Config, OtherOptions } from '../../models/car.model';
 import { CarService } from '../../services/carDetails.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -21,7 +21,9 @@ export class CarConfigComponent {
   selectedConfiguration: number = 0;
   isTowHitch: boolean = false;
   isYokeSteeringWheel: boolean = false;
-  carConfigList: Config[] = [];
+  carConfigList : Config[] = [{
+    price : 0
+  }];
   showCard: boolean = false;
   selectedConfigurationDetails: Config = {
     id: 0,
@@ -31,7 +33,10 @@ export class CarConfigComponent {
     price: 0
   };
   selecedCarImgPath: string = "";
-  otherOptions: OtherOptions = {};
+  otherOptions: OtherOptions = {
+    towHitch: false,
+    yoke: false
+  };
   constructor(private httpClient: HttpClient, private carService: CarService, private route: ActivatedRoute) {
     const config = this.carService.getSelectedConfiguration();
     if (config && config !== 0) {
@@ -51,7 +56,8 @@ export class CarConfigComponent {
     const model = queryParams.get('model');
     const color = queryParams.get('color');
     this.selecedCarImgPath = this.carService.getSelectedCarImage();
-    this.httpClient.get('/options/' + model).subscribe((res: CarConfig | any) => {
+    this.httpClient.get<CarConfig>('/options/' + model).subscribe((res : CarConfig) => {
+     console.log(typeof res);
       this.otherOptions = {
         towHitch: res.towHitch,
         yoke: res.yoke
@@ -68,7 +74,13 @@ export class CarConfigComponent {
       this.selectedConfigurationDetails = filterByConfigId;
       this.showCard = true;
     } else {
-      this.selectedConfigurationDetails = {};
+      this.selectedConfigurationDetails = {
+        id: 0,
+        description: "",
+        range: 0,
+        speed: 0,
+        price: 0
+      };
       this.showCard = false;
     }
     this.selectedConfiguration = configId;

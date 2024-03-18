@@ -3,8 +3,6 @@ import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import { setupWorker } from 'msw/browser';
 import {http, HttpResponse, PathParams} from 'msw';
-import { CarModelColorComponent } from './app/dashboard/carModelColorComponent/car-model-color.component';
-import { CarModel } from './app/models/car.model';
 bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
 

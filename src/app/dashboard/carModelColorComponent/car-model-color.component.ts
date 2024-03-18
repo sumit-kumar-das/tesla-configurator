@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
@@ -16,15 +16,14 @@ import { CarService } from '../../services/carDetails.service';
   styleUrl: './car-model-color.component.scss'
 })
 export class CarModelColorComponent {
-  @Output() sendModelDetails = new EventEmitter<any>();
   name: string = 'Car Model Color Selection Component';
-  carModelList: any = []
+  carModelList: CarModel[] = [];
   carColorList: Color[] = [];
   selectedModel: string = "";
   selectedColor: string = "";
   selecedCarImgPath: string = "";
   constructor(private httpClient: HttpClient, private carService: CarService) {
-    this.httpClient.get('/models').subscribe((res: CarModel | any) => {
+    this.httpClient.get<CarModel[]>('/models').subscribe((res : Array<CarModel> ) => {
       this.carModelList = res;
       this.carService.updateCarModelsList(res);
     });
@@ -45,7 +44,7 @@ export class CarModelColorComponent {
   onChangeOfModel(model: string, isManuallyChanged: boolean) {
     this.selectedColor = "";
     this.selecedCarImgPath = "";
-    const filterByModel = this.carModelList.find((item: any) => {
+    const filterByModel = this.carModelList.find((item: CarModel) => {
       return item.code === model;
     });
     if (filterByModel) {

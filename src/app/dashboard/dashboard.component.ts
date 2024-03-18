@@ -47,10 +47,10 @@ export class DashboardComponent {
     this.router.navigate(['step' + step], { queryParams: queryParams });
   }
   ngOnInit() {
-    this.carService.stepTwoObserv$.subscribe((newState: any) => {
+    this.carService.stepTwoObserv$.subscribe((newState: boolean) => {
       this.enableSecondStep = newState;
     });
-    this.carService.stepThreeObserv$.subscribe((newState: any) => {
+    this.carService.stepThreeObserv$.subscribe((newState: boolean) => {
       this.enableThirdStep = newState;
     });
   }
